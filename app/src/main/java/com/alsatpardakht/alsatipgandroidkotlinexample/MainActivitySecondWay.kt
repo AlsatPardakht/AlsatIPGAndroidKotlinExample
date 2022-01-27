@@ -9,9 +9,9 @@ import android.widget.TextView
 import com.alsatpardakht.alsatipgandroid.AlsatIPG
 import com.alsatpardakht.ipg.data.remote.model.PaymentSignRequest
 
-class MainActivity : AppCompatActivity() {
+class MainActivitySecondWay : AppCompatActivity() {
 
-    private val API = "09144137673"
+    private val API = "ENTER YOUR API KEY HERE"
 
     private val alsatIPG = AlsatIPG.getInstance()
 
@@ -63,6 +63,14 @@ class MainActivity : AppCompatActivity() {
                 when {
                     paymentValidationResult.isSuccessful -> {
                         log("payment Validation Success data = ${paymentValidationResult.data}")
+                        if (
+                            (paymentValidationResult.data?.PSP?.IsSuccess == true) &&
+                            (paymentValidationResult.data?.VERIFY?.IsSuccess == true)
+                        ) {
+                            log("money transferred")
+                        } else {
+                            log("money has not been transferred")
+                        }
                     }
                     paymentValidationResult.isLoading -> {
                         log("payment Validation Loading ...")
