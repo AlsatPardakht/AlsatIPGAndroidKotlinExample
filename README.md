@@ -53,8 +53,6 @@
 برای مشخص کردن Redirect Address دلخواه خود کافی است در تگ data مقدار های host و scheme و pathPrefix دلخواه خود را وارد کنید
 <br>
 در مثال زیر Redirect Address برابر است با : http://www.example.com/some_path
-<br>  برای آشنایی بیشتر با آدرس های بازگشت به اکتیویتی می توانید داکیومنت 
-<a href="https://developer.android.com/training/app-links/deep-linking">deep link</a>   را مطالعه کنید .
 
 </div>
 
@@ -85,6 +83,9 @@
 ```
 
 <div dir="rtl">
+  برای آشنایی بیشتر با آدرس های بازگشت به اکتیویتی می توانید داکیومنت 
+<a href="https://developer.android.com/training/app-links/deep-linking">deep link</a>   را مطالعه کنید .
+
 <br>
 
 ### مرحله دوم : پیاده سازی اینترفیس ها
@@ -143,18 +144,16 @@ class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentVa
 
 <div dir="rtl">
 
-- API همان کلید دریافتی شما در وب سایت 
-<a href="">آل سات پرداخت</a>
-می باشد که برای دریافت آن ابتدا باید در وب سایت ثبت نام کنید و پس از مراحل احراز هویت این کلید به شما داده می شود
+- API همان کلید دریافتی شما در وب سایت آل سات پرداخت می باشد که برای دریافت آن ابتدا باید در وب سایت ثبت نام کنید و پس از مراحل احراز هویت این کلید به شما داده می شود .
 <br>
-- Amount همان مبلغ قالب پرداخت به ریال است 
+- Amount همان مبلغ قالب پرداخت به ریال است . 
 <br>
-- InvoiceNumber همان شماره سفارش شما است
+- InvoiceNumber همان شماره سفارش شما است .
 <br>
-- RedirectAddress همان آدرس بازگشت به اپلیکیشن شماست که در فایل AndroidManifest.xml وارد کردید
+- RedirectAddress همان آدرس بازگشت به اپلیکیشن شماست که در فایل AndroidManifest.xml وارد کردید .
 <br>
 پس از فراخوانی تابع sign نتایج این فراخوانی از طریق تابع 
-onPaymentSignResult که پیاده سازی کرده بودید در دسترس است
+onPaymentSignResult که پیاده سازی کرده بودید در دسترس است :
 
 </div>
 
@@ -178,14 +177,16 @@ override fun onPaymentSignResult(paymentSignResult: PaymentSignResult) {
 
 <div dir="rtl">
 
-این تابع وضعیت های موفق بودن یا لودینگ یا ارور تابع sign را به شما تحویل می دهد
+این تابع وضعیت های موفق بودن یا لودینگ یا ارور تابع sign را به شما تحویل می دهد .
 <br>
 دقت کنید در زمان موفق بودن sign پرداخت شما باید با استفاده از url موجود در نتیجه یک صفحه وب برای هدایت شدن کاربر به صفحه پرداخت شاپرک باز کنید
+<br>
+برای باز کردن صفحه وب می توانید از مرورگر وب یا WebView استفاده کنید که در این پروژه برای سادگی از روش مرورگر وب استفاده شده است .
 <br><br>
 
 ### مرحله پنجم : validation کردن پرداخت
 
-برای این که بتوانید برای پرداخت validation انجام بدهید کافی است تابع validation را در onCreate اکتیویتی یا هر تابع دیگری فراخوانی کنید
+برای این که بتوانید برای پرداخت validation انجام بدهید کافی است تابع validation را در onCreate اکتیویتی یا هر تابع دیگری فراخوانی کنید :
 
 </div>
 
@@ -198,13 +199,14 @@ if (data != null) {
 
 <div dir="rtl">
 
-- API همان کلید دریافتی شما در وب سایت آل سات پرداخت می باشد
-- intent.data همان اطلاعاتی هستند که از سمت شاپرک به اکتیویتی شما بازگشت داده می شود و تابع validation با استفاده از این اطلاعات معتبر بودن پرداخت را برسی می کند
+- API همان کلید دریافتی شما در وب سایت آل سات پرداخت می باشد .
+- intent.data همان اطلاعاتی هستند که از سمت شاپرک به اکتیویتی شما بازگشت داده می شود و تابع validation با  استفاده از این اطلاعات معتبر بودن پرداخت را برسی می کند .
+
 <br>
 
-پس از فراخوانی تابع validation نتایج این فراخوانی از طریق تابع onPaymentValidationResult که پیاده سازی کرده بودید در دسترس است
+پس از فراخوانی تابع validation نتایج این فراخوانی از طریق تابع onPaymentValidationResult که پیاده سازی کرده بودید در دسترس است .
 <br>
-پس از آن که کاربر پرداخت را انجام داد یا به هر دلیلی موفق به پرداخت نشد شاپرک کاربر را به ادرس RedirectAddress هدایت می کند که باعث فراخوانی شدن اکتیویتی اپلیکیشن شما و فراخوانی شدن تابع onPaymentValidationResult می شود
+پس از آن که کاربر پرداخت را انجام داد یا به هر دلیلی موفق به پرداخت نشد شاپرک کاربر را به آدرس RedirectAddress هدایت می کند که باعث فراخوانی شدن اکتیویتی اپلیکیشن شما و فراخوانی شدن تابع onPaymentValidationResult می شود :
 </div>
 
 ```Ktolin
@@ -233,9 +235,9 @@ override fun onPaymentValidationResult(paymentValidationResult: PaymentValidatio
 
 <div dir="rtl">
 
-این تابع وضعیت های موفق بودن یا لودینگ یا ارور تابع validation را به شما تحویل می دهد
+این تابع وضعیت های موفق بودن یا لودینگ یا ارور تابع validation را به شما تحویل می دهد .
 <br>
-همچنین در زمانی که پرداخت موفق بوده فیلد data موجود در نتیجه اطلاعاتی در مورد پرداخت را به شما می دهد که می توانید از آن استفاده کنید
+همچنین در زمانی که پرداخت موفق بوده فیلد data موجود در نتیجه اطلاعاتی در مورد پرداخت را به شما می دهد که می توانید از آن استفاده کنید .
 
 <br>
 
@@ -258,7 +260,7 @@ if (
 <div dir="rtl">
 
 اطلاعات موجود در فیلد data شامل :
-- مبلغ پرداختی ( PSP.Amount )
+- مبلغ پرداختی به ریال ( PSP.Amount )
 - تاریخ فاکتور ( PSP.InvoiceDate )
 - شماره فاکتور ( PSP.InvoiceNumber )
 - موفقیت پرداخت در سمت بانک ( PSP.IsSuccess )
@@ -278,15 +280,19 @@ if (
 - شماره مرجع شاپرک ( VERIFY.ShaparakRefNumber )
 
 ### ⚠️ توجه ۲ :
-شما می توانید فرایند validation  را سمت سرور خود انجام بدهید و اطلاعات سمت بانک را به اپلیکیشن نفرستید که امنیت اپلیکیشن و پرداخت شما را بالا خواهد برد .
+شما می توانید فرایند validation  را سمت سرور خود انجام بدهید و اطلاعات سمت بانک را به اپلیکیشن نفرستید که امنیت اپلیکیشن و پرداخت شما را خیلی بالا خواهد برد .
 <br>
 برای این کار کافی است در زمان ایجاد نمونه از PaymentSignRequest برای sign کردن پرداخت در فیلد RedirectAddress آدرس وب سایت خود برای validation را وارد کنید  . در این صورت شاپرک اطلاعات validation را به آدرس وارد شده خواهد فرستاد و شما می توانید با استفاده از 
 api آل سات پرداخت در وب سایت خود اعتبار پرداخت را برسی کنید و بعد برسی اعتبار پرداخت کاربر را به آدرسی که در فایل AndroidManifest.xml وارد کردید redirect کنید .
-
-### ⚠️ توجه ۳ : ( روش callback با Lambda functions )
-در صورتی که علاقه داشتید می توانید به جای پیاده سازی اینترفیس های PaymentSignCallback و PaymentValidationCallback از روش Lambda functions استفاده کنید
 <br>
-در این روش کافی است یک نمونه از کلاس AlsatIPG را بصورت زیر بسازید و با کمک این نمونه کار های پرداخت را انجام بدهید
+در صورت استفاده از روش validation سمت سرور کاربر (هکر) نمی تواند ادعا کند پرداخت موفق  داشته (چون دسترسی به validation ندارد) در حالی که در روش معمولی کاربر(هکر) ممکن است با ایجاد تغییراتی در اپلیکیشن شما یا با روش های دیگر موفق شود این کار را انجام دهد .
+
+### ⚠️ توجه ۳ : 
+( استفاده از روش callback با Lambda functions )
+<br>
+در صورتی که علاقه داشتید می توانید به جای پیاده سازی اینترفیس های PaymentSignCallback و PaymentValidationCallback از روش Lambda functions استفاده کنید .
+<br>
+در این روش کافی است یک نمونه از کلاس AlsatIPG را بصورت زیر بسازید و با کمک این نمونه کار های پرداخت را انجام بدهید :
 
 </div>
 
@@ -366,7 +372,7 @@ if (data != null) {
 سورس کد کامل هر دو روش در اکتیویتی های زیر آورده شده است :
 <br>
 - <a href="https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/blob/master/app/src/main/java/com/alsatpardakht/alsatipgandroidkotlinexample/MainActivityFirstWay.kt">MainActivityFirstWay</a>
-<br>
+
 - <a href="https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/blob/master/app/src/main/java/com/alsatpardakht/alsatipgandroidkotlinexample/MainActivitySecondWay.kt">MainActivitySecondWay</a>
 
 ## ⛏️ ساخته شده با استفاده از  <a name = "built_using"></a>
@@ -385,6 +391,6 @@ if (data != null) {
 
 
 
-لیست دیگر [توسعه دهندگان](https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/contributors)
-که در این پروژه مشارکت کرده اند
+لیست [دیگر توسعه دهندگان](https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/contributors)
+که در این پروژه مشارکت کرده اند .
 </div>
