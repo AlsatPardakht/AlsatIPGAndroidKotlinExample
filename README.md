@@ -19,7 +19,7 @@
 <div dir="rtl">
 
 <p align="center">
-یک مثال ساده از نحوه استفاده کردن کتابخانه AlsatIPGAndroid در اپلیکیشن با زبان برنامه نویسی Kotlin
+یک مثال ساده از نحوه استفاده کردن کتابخانه <a href="https://github.com/AlsatPardakht/AlsatIPGAndroid">AlsatIPGAndroid</a> در اپلیکیشن با زبان برنامه نویسی Kotlin
     <br> 
 </p>
 
