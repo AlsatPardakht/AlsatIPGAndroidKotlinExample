@@ -402,7 +402,7 @@ override fun onNewIntent(intent: Intent?) {
 
 
 - [Kotlin](https://kotlinlang.org/) - programming language
-- [AlsatIPGAndroid](https://ktor.io/) - payment client library
+- [AlsatIPGAndroid](https://github.com/AlsatPardakht/AlsatIPGAndroid) - payment client library
 
 <div dir="rtl">
 
