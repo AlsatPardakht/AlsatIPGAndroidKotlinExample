@@ -28,8 +28,34 @@ class MainActivitySecondWay : AppCompatActivity() {
         signPaymentButton.setOnClickListener {
             signPaymentButtonOnClick()
         }
+    }
 
-        configurePaymentValidation()
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.data?.let {
+            log("intent and Uri is not null")
+            alsatIPG.validation(API, it) { paymentValidationResult ->
+                when {
+                    paymentValidationResult.isSuccessful -> {
+                        log("payment Validation Success data = ${paymentValidationResult.data}")
+                        if (
+                            (paymentValidationResult.data?.PSP?.IsSuccess == true) &&
+                            (paymentValidationResult.data?.VERIFY?.IsSuccess == true)
+                        ) {
+                            log("money transferred")
+                        } else {
+                            log("money has not been transferred")
+                        }
+                    }
+                    paymentValidationResult.isLoading -> {
+                        log("payment Validation Loading ...")
+                    }
+                    else -> {
+                        log("payment Validation error = ${paymentValidationResult.errorMessage}")
+                    }
+                }
+            }
+        } ?: log("intent or Uri is null")
     }
 
     private fun signPaymentButtonOnClick() {
@@ -51,33 +77,6 @@ class MainActivitySecondWay : AppCompatActivity() {
                 }
                 else -> {
                     log("payment Sign error = ${paymentSignResult.errorMessage}")
-                }
-            }
-        }
-    }
-
-    private fun configurePaymentValidation() {
-        val data = intent.data
-        if (data != null) {
-            alsatIPG.validation(API, data) { paymentValidationResult ->
-                when {
-                    paymentValidationResult.isSuccessful -> {
-                        log("payment Validation Success data = ${paymentValidationResult.data}")
-                        if (
-                            (paymentValidationResult.data?.PSP?.IsSuccess == true) &&
-                            (paymentValidationResult.data?.VERIFY?.IsSuccess == true)
-                        ) {
-                            log("money transferred")
-                        } else {
-                            log("money has not been transferred")
-                        }
-                    }
-                    paymentValidationResult.isLoading -> {
-                        log("payment Validation Loading ...")
-                    }
-                    else -> {
-                        log("payment Validation error = ${paymentValidationResult.errorMessage}")
-                    }
                 }
             }
         }
