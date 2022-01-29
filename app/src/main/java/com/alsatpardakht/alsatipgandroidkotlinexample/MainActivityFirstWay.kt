@@ -37,9 +37,9 @@ class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentVa
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.data?.let {
+        intent?.data?.let { data ->
             log("intent and Uri is not null")
-            alsatIPG.validation(API, it)
+            alsatIPG.validation(API, data)
         } ?: log("intent or Uri is null")
     }
 

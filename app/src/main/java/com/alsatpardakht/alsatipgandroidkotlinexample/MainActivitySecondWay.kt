@@ -32,9 +32,9 @@ class MainActivitySecondWay : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.data?.let {
+        intent?.data?.let { data ->
             log("intent and Uri is not null")
-            alsatIPG.validation(API, it) { paymentValidationResult ->
+            alsatIPG.validation(API, data) { paymentValidationResult ->
                 when {
                     paymentValidationResult.isSuccessful -> {
                         log("payment Validation Success data = ${paymentValidationResult.data}")
