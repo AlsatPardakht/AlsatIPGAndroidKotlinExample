@@ -13,7 +13,8 @@
         android:theme="@style/Theme.AlsatIPGAndroidKotlinExample">
         <activity
             android:name=".MainActivityFirstWay"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,6 +33,12 @@
                     android:scheme="http" />
                 <!-- note that the leading "/" is required for pathPrefix -->
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivitySecondWay"
+            android:exported="true"
+            android:launchMode="singleTask">
+
         </activity>
     </application>
 

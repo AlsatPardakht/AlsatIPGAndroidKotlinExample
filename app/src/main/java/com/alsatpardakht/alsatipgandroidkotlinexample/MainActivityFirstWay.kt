@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.alsatpardakht.alsatipgandroid.AlsatIPG
 import com.alsatpardakht.alsatipgandroid.core.callback.PaymentSignCallback
 import com.alsatpardakht.alsatipgandroid.core.callback.PaymentValidationCallback
+import com.alsatpardakht.alsatipgandroid.data.remote.model.PaymentValidationRequest
 import com.alsatpardakht.alsatipgandroid.domain.model.PaymentSignResult
 import com.alsatpardakht.alsatipgandroid.domain.model.PaymentValidationResult
 import com.alsatpardakht.ipg.data.remote.model.PaymentSignRequest
@@ -32,8 +33,14 @@ class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentVa
         signPaymentButton.setOnClickListener {
             signPaymentButtonOnClick()
         }
+    }
 
-        configurePaymentValidation()
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.data?.let {
+            log("intent and Uri is not null")
+            alsatIPG.validation(API, it)
+        } ?: log("intent or Uri is null")
     }
 
     override fun onPaymentSignResult(paymentSignResult: PaymentSignResult) {
@@ -82,13 +89,6 @@ class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentVa
             RedirectAddress = "http://www.example.com/some_path"
         )
         alsatIPG.sign(paymentSignRequest)
-    }
-
-    private fun configurePaymentValidation() {
-        val data = intent.data
-        if (data != null) {
-            alsatIPG.validation(API, data)
-        }
     }
 
     private fun log(message: String) {
