@@ -33,7 +33,7 @@
 
 ## 🧐 درباره <a name = "about"></a>
 <p dir="rtl">
-در این اپلیکیشن از کتابخانه <a href="https://github.com/AlsatPardakht/AlsatIPGAndroid">AlsatIPGAndroid</a> برای پرداخت صورت حساب به صورت اینترنتی استفاده شده است که با دو روش پیاده سازی اینترفیس یا callback  قابل پیاده سازی است . 
+در این اپلیکیشن از کتابخانه <a href="https://github.com/AlsatPardakht/AlsatIPGAndroid">AlsatIPGAndroid</a> برای پرداخت صورت حساب به صورت اینترنتی استفاده شده است .
 <br>
 برای مطالعه بیشتر در مورد api مستقیم IPG آل سات پرداخت می توانید به لینک زیر مراجعه کنید :
 </p>
@@ -66,7 +66,7 @@
 
     <application>
         <activity
-            android:name=".MainActivityFirstWay"
+            android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
             
@@ -102,24 +102,46 @@ android:launchMode="singleTask"
 
 <br>
 
-### مرحله دوم : پیاده سازی اینترفیس ها
-در این مرحله کافی است اکتیویتی یا فرگمنت ( یا view model و یا هر کلاس دلخواه دیگر ) شما از اینترفیس های PaymentSignCallback و PaymentValidationCallback را پیاده سازی کند که هر یک دارای یک تابع است که باید پیاده سازی شود :
+### مرحله دوم : ساختن نمونه از کلاس AlsatIPG
+
+با استفاده از دستور زیر می توانید یک نمونه از کلاس AlsatIPG بسازید و با کمک این نمونه کار های پرداخت را انجام دهید :
+</div>
+
+```Kotlin
+private val alsatIPG = AlsatIPG.getInstance()
+```
+
+<div dir="rtl">
+<br>
+
+### مرحله سوم : پیاده سازی observer ها
+در این مرحله کافی است اکتیویتی یا فرگمنت  شما از LiveData های PaymentSignStatus و PaymentValidationStatus را observe کند :
 
 </div>
 
 ```Kotlin
-class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentValidationCallback {
+class MainActivity : AppCompatActivity() {
 
-    override fun onPaymentSignResult(paymentSignResult: PaymentSignResult) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         ...
 
+        observeToPaymentSignStatus()
+        observeToPaymentValidationStatus()
     }
 
-    override fun onPaymentValidationResult(paymentValidationResult: PaymentValidationResult) {
+    private fun observeToPaymentSignStatus() {
+        alsatIPG.paymentSignStatus.observe(this) { paymentSignResult ->
+            ...
+        }
+    }
 
-        ...
-
+    private fun observeToPaymentValidationStatus() {
+        alsatIPG.paymentValidationStatus.observe(this) { paymentValidationResult ->
+            ...
+        }
     }
 
 }
@@ -127,20 +149,8 @@ class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentVa
 ```
 
 <div dir="rtl">
-این دو تابع نتیجه sign شدن پرداخت و validation پرداخت را به شما بر می گرداند .
+این دو LiveData نتیجه sign شدن پرداخت و validation پرداخت را به شما بر می گرداند .
 <br><br>
-
-### مرحله سوم : ساختن نمونه از کلاس AlsatIPG
-
-با استفاده از دستور زیر می توانید یک نمونه از کلاس AlsatIPG بسازید و با کمک این نمونه کار های پرداخت را انجام دهید :
-</div>
-
-```Kotlin
-  private val alsatIPG = AlsatIPG.getInstance(this, this)
-```
-
-<div dir="rtl">
-<br>
 
 ### مرحله چهارم : sign کردن پرداخت
 برای شروع sign پرداخت کافی است یک نمونه از PaymentSignRequest بسازید و با کمک تابع sign موجود در کتابخانه پرداخت را انجام دهید :
@@ -166,24 +176,25 @@ class MainActivityFirstWay : AppCompatActivity(), PaymentSignCallback, PaymentVa
 
 - مقدار RedirectAddress همان آدرس دیپ لینک به اکتیویتی شماست که در فایل AndroidManifest.xml وارد کردید .
 
-پس از فراخوانی تابع sign نتایج این فراخوانی از طریق تابع 
-onPaymentSignResult که پیاده سازی کرده بودید در دسترس است :
+پس از فراخوانی تابع sign نتایج این فراخوانی از طریق paymentSignStatus که observe کرده بودید در دسترس است :
 
 </div>
 
 ```Kotlin
-override fun onPaymentSignResult(paymentSignResult: PaymentSignResult) {
-    when {
-        paymentSignResult.isSuccessful -> {
-            log("payment Sign Success url = ${paymentSignResult.url}")
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(paymentSignResult.url))
-            startActivity(intent)
-        }
-        paymentSignResult.isLoading -> {
-            log("payment Sign Loading ...")
-        }
-        else -> {
-            log("payment Sign error = ${paymentSignResult.errorMessage}")
+private fun observeToPaymentSignStatus() {
+    alsatIPG.paymentSignStatus.observe(this) { paymentSignResult ->
+        when {
+            paymentSignResult.isSuccessful -> {
+                log("payment Sign Success url = ${paymentSignResult.url}")
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(paymentSignResult.url))
+                startActivity(intent)
+            }
+            paymentSignResult.isLoading -> {
+                log("payment Sign Loading ...")
+            }
+            else -> {
+                log("payment Sign error = ${paymentSignResult.error?.message}")
+            }
         }
     }
 }
@@ -191,7 +202,7 @@ override fun onPaymentSignResult(paymentSignResult: PaymentSignResult) {
 
 <div dir="rtl">
 
-این تابع وضعیت های موفق بودن یا لودینگ یا ارور تابع sign را به شما تحویل می دهد .
+داخل observer وضعیت های موفق بودن یا لودینگ یا ارور تابع sign را به شما تحویل می دهد .
 <br>
 دقت کنید در زمان موفق بودن sign پرداخت شما باید با استفاده از url موجود در نتیجه یک صفحه وب برای هدایت شدن کاربر به صفحه پرداخت شاپرک باز کنید .
 <br>
@@ -223,28 +234,30 @@ override fun onNewIntent(intent: Intent?) {
 <br>
 پس از آن که کاربر پرداخت را به درستی انجام داد یا به هر دلیلی موفق به پرداخت نشد شاپرک کاربر را به آدرس RedirectAddress که در PaymentSignRequest وارد کرده بودید هدایت می کند و چون یک دیپ لینک به همین آدرس تعریف کرده اید باعث باز شدن اکتیویتی شما و فراخوانی تابع onNewIntent اکتیویتی شما و سپس فراخوانی شدن تابع validation می شود .
 <br>
-پس از فراخوانی تابع validation نتایج این فراخوانی از طریق تابع onPaymentValidationResult که پیاده سازی کرده بودید در دسترس است :
+پس از فراخوانی تابع validation نتایج این فراخوانی از طریق paymentValidationStatus که observe کرده بودید در دسترس است :
 </div>
 
 ```Kotlin
-override fun onPaymentValidationResult(paymentValidationResult: PaymentValidationResult) {
-    when {
-        paymentValidationResult.isSuccessful -> {
-            log("payment Validation Success data = ${paymentValidationResult.data}")
-            if (
-                (paymentValidationResult.data?.PSP?.IsSuccess == true) &&
-                (paymentValidationResult.data?.VERIFY?.IsSuccess == true)
-            ) {
-                log("money transferred")
-            } else {
-                log("money has not been transferred")
+private fun observeToPaymentValidationStatus() {
+    alsatIPG.paymentValidationStatus.observe(this) { paymentValidationResult ->
+        when {
+            paymentValidationResult.isSuccessful -> {
+                log("payment Validation Success data = ${paymentValidationResult.data}")
+                if (
+                    (paymentValidationResult.data?.PSP?.IsSuccess == true) &&
+                    (paymentValidationResult.data?.VERIFY?.IsSuccess == true)
+                ) {
+                    log("money transferred")
+                } else {
+                    log("money has not been transferred")
+                }
             }
-        }
-        paymentValidationResult.isLoading -> {
-            log("payment Validation Loading ...")
-        }
-        else -> {
-            log("payment Validation error = ${paymentValidationResult.errorMessage}")
+            paymentValidationResult.isLoading -> {
+                log("payment Validation Loading ...")
+            }
+            else -> {
+                log("payment Validation error = ${paymentValidationResult.error?.message}")
+            }
         }
     }
 }
@@ -305,96 +318,11 @@ api آل سات پرداخت در وب سایت خود اعتبار پرداخت
 <br>
 در صورت استفاده از روش validation سمت سرور کاربر (هکر) نمی تواند ادعا کند پرداخت موفق  داشته (چون دسترسی به validation سمت سرور شما را ندارد) در حالی که در روش معمولی کاربر(هکر) ممکن است با ایجاد تغییراتی در اپلیکیشن شما یا با روش های دیگر موفق شود این کار را انجام دهد .
 
-### ⚠️ توجه ۳ : 
-( استفاده از روش callback با Lambda functions )
+
+سورس کد کامل  در اکتیویتی زیر آورده شده است :
 <br>
-در صورتی که علاقه داشتید می توانید به جای پیاده سازی اینترفیس های PaymentSignCallback و PaymentValidationCallback از روش Lambda functions استفاده کنید .
-<br>
-در این روش کافی است یک نمونه از کلاس AlsatIPG را بصورت زیر بسازید و با کمک این نمونه کار های پرداخت را انجام بدهید :
 
-</div>
-
-```Kotlin
-  private val alsatIPG = AlsatIPG.getInstance()
-```
-
-<div dir="rtl">
-
-همچنین برای sign کردن پرداخت به روش زیر عمل کنید :
-
-</div>
-
-```Kotlin
-val paymentSignRequest = PaymentSignRequest(
-    Api = API,
-    Amount = "10000",
-    InvoiceNumber = "12345",
-    RedirectAddress = "http://www.example.com/some_path"
-)
-alsatIPG.sign(paymentSignRequest) { paymentSignResult ->
-    when {
-        paymentSignResult.isSuccessful -> {
-            log("payment Sign Success url = ${paymentSignResult.url}")
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(paymentSignResult.url))
-            startActivity(intent)
-        }
-        paymentSignResult.isLoading -> {
-            log("payment Sign Loading ...")
-        }
-        else -> {
-            log("payment Sign error = ${paymentSignResult.errorMessage}")
-        }
-    }
-}
-```
-
-<div dir="rtl">
-
-و برای validation کردن پرداخت به روش زیر عمل کنید :
-
-</div>
-
-```Kotlin
-override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        intent?.data?.let { data ->
-            log("intent and Uri is not null")
-            alsatIPG.validation(API, data) { paymentValidationResult ->
-                when {
-                    paymentValidationResult.isSuccessful -> {
-                        log("payment Validation Success data = ${paymentValidationResult.data}")
-                        if (
-                            (paymentValidationResult.data?.PSP?.IsSuccess == true) &&
-                            (paymentValidationResult.data?.VERIFY?.IsSuccess == true)
-                        ) {
-                            log("money transferred")
-                        } else {
-                            log("money has not been transferred")
-                        }
-                    }
-                    paymentValidationResult.isLoading -> {
-                        log("payment Validation Loading ...")
-                    }
-                    else -> {
-                        log("payment Validation error = ${paymentValidationResult.errorMessage}")
-                    }
-                }
-            }
-        } ?: log("intent or Uri is null")
-    }
-```
-
-<div dir="rtl">
-
-### ⚠️ توجه ۴ :
-
-روش های پیاده سازی اینترفیس و Lambda functions هیچ تفاوتی در کارایی ندارند و به شما بستگی دارد که با کدام روش راحت تر هستید یا اینکه در مورد های بخصوص کدام روش نتیجه بهتری برای شما بدست می آورد .
-
-سورس کد کامل هر دو روش در اکتیویتی های زیر آورده شده است :
-<br>
-- <a href="https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/blob/master/app/src/main/java/com/alsatpardakht/alsatipgandroidkotlinexample/MainActivityFirstWay.kt">MainActivityFirstWay</a> <= روش پیاده سازی اینترفیس ها
-
-- <a href="https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/blob/master/app/src/main/java/com/alsatpardakht/alsatipgandroidkotlinexample/MainActivitySecondWay.kt">MainActivitySecondWay</a> <= روش استفاده از Lambda functions
+- <a href="https://github.com/AlsatPardakht/AlsatIPGAndroidKotlinExample/blob/master/app/src/main/java/com/alsatpardakht/alsatipgandroidkotlinexample/MainActivity.kt">MainActivity</a>
 
 ## ⛏️ ساخته شده با استفاده از  <a name = "built_using"></a>
 

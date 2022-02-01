@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
             signPaymentButtonOnClick()
         }
 
-        observeOnPaymentSignStatus()
-        observeOnPaymentValidationStatus()
+        observeToPaymentSignStatus()
+        observeToPaymentValidationStatus()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         } ?: log("intent or Uri is null")
     }
 
-    private fun observeOnPaymentSignStatus() {
+    private fun observeToPaymentSignStatus() {
         alsatIPG.paymentSignStatus.observe(this) { paymentSignResult ->
             when {
                 paymentSignResult.isSuccessful -> {
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeOnPaymentValidationStatus() {
+    private fun observeToPaymentValidationStatus() {
         alsatIPG.paymentValidationStatus.observe(this) { paymentValidationResult ->
             when {
                 paymentValidationResult.isSuccessful -> {
