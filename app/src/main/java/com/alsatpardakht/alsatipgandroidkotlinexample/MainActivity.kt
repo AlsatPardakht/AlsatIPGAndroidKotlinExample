@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.alsatpardakht.alsatipgandroid.AlsatIPG
-import com.alsatpardakht.alsatipgandroid.data.remote.model.PaymentSignRequest
+import com.alsatpardakht.alsatipgcore.data.remote.model.PaymentSignRequest
 
 class MainActivity : AppCompatActivity() {
 
