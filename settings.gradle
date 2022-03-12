@@ -8,3 +8,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Alsat IPG Android Kotlin Example"
 include ':app'
+
+include ":AlsatIPGCore"
+project(':AlsatIPGCore').projectDir = new File('../AlsatIPGCoreLib/AlsatIPGCore')
+
+include ":AlsatIPGAndroid"
+project(':AlsatIPGAndroid').projectDir = new File('../AlsatIPGAndroidLib/AlsatIPGAndroid')

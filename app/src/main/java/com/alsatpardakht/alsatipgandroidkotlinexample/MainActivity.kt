@@ -7,11 +7,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.alsatpardakht.alsatipgandroid.AlsatIPG
-import com.alsatpardakht.alsatipgcore.data.remote.model.PaymentSignRequest
+import com.alsatpardakht.alsatipgcore.domain.model.PaymentType
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.text.Normalizer
 
 class MainActivity : AppCompatActivity() {
 
     private val API = "ENTER YOUR API KEY HERE"
+    private val paymentType = PaymentType.Mostaghim
 
     private val alsatIPG = AlsatIPG.getInstance()
 
@@ -37,7 +41,10 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         intent?.data?.let { data ->
             log("intent and Uri is not null")
-            alsatIPG.validation(API, data)
+            when (paymentType) {
+                PaymentType.Mostaghim -> alsatIPG.validationMostaghim(API, data)
+                PaymentType.Vaset -> alsatIPG.validationVaset(API, data)
+            }
         } ?: log("intent or Uri is null")
     }
 
@@ -84,13 +91,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signPaymentButtonOnClick() {
-        val paymentSignRequest = PaymentSignRequest(
-            Api = API,
-            Amount = "10000",
-            InvoiceNumber = "12345",
-            RedirectAddress = "http://www.example.com/some_path"
-        )
-        alsatIPG.sign(paymentSignRequest)
+        when (paymentType) {
+            PaymentType.Mostaghim -> alsatIPG.signMostaghim(
+                Api = API,
+                Amount = 10_000,
+                InvoiceNumber = "123456",
+                RedirectAddress = "http://www.example.com/some_path"
+            )
+            PaymentType.Vaset -> alsatIPG.signVaset(
+                Api = API,
+                Amount = 20_000,
+                RedirectAddress = "http://www.example.com/some_path",
+                Tashim = emptyList()
+            )
+        }
     }
 
     private fun log(message: String) {
