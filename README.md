@@ -169,7 +169,8 @@ when (paymentType) {
         Api = API,
         Amount = 20_000,
         RedirectAddress = "http://www.example.com/some_path",
-        Tashim = emptyList()
+        Tashim = emptyList(),
+        InvoiceNumber = "123456"
     )
 }
 ```

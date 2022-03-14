@@ -8,9 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import com.alsatpardakht.alsatipgandroid.AlsatIPG
 import com.alsatpardakht.alsatipgcore.domain.model.PaymentType
-import java.net.URLDecoder
-import java.net.URLEncoder
-import java.text.Normalizer
 
 class MainActivity : AppCompatActivity() {
 
@@ -102,7 +99,8 @@ class MainActivity : AppCompatActivity() {
                 Api = API,
                 Amount = 20_000,
                 RedirectAddress = "http://www.example.com/some_path",
-                Tashim = emptyList()
+                Tashim = emptyList(),
+                InvoiceNumber = "123456"
             )
         }
     }
