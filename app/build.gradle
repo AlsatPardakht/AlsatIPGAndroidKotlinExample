@@ -42,5 +42,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.alsatpardakht:alsatipgcore:1.2.2'
-    implementation 'com.alsatpardakht:alsatipgandroid:1.2.2'
+    implementation 'com.alsatpardakht:alsatipgandroid:1.2.3'
 }
