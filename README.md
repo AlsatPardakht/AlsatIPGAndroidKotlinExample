@@ -360,3 +360,4 @@ api آلسات پرداخت در وب سایت خود اعتبار پرداخت 
 
 - [Kotlin](https://kotlinlang.org/) - programming language
 - [AlsatIPGAndroid](https://github.com/AlsatPardakht/AlsatIPGAndroid) - payment client library
+- [AlsatIPGCore](https://github.com/AlsatPardakht/AlsatIPGCore) - payment core library
